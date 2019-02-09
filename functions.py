@@ -3,6 +3,7 @@ import bs4
 from requests.adapters import HTTPAdapter
 from urllib import parse
 import csv
+import os
 
 
 def get_website(url):
@@ -13,8 +14,7 @@ def get_website(url):
     session.mount('https://', adapter)
 
     try:
-        req = session.get(url, timeout=30, allow_redirects=False, headers={'Accept-Encoding': 'identity'})
-
+        req = session.get(url, timeout=45, allow_redirects=False, headers={'Accept-Encoding': 'identity'})
         if 'Content-Type' in req.headers:
             headers = req.headers['Content-Type']
 
@@ -24,8 +24,11 @@ def get_website(url):
                 return False
         else:
             return False
-    except (requests.ConnectionError,requests.Timeout) as e:
-        print("[WARNING] Couldn't connect. Error: " + str(e))
+    except (requests.ConnectionError, requests.Timeout) as e:
+        print('[Warning] Connection Error: ' + str(e))
+        return False
+    except requests.exceptions.RequestException as e:
+        print('[Warning] General Exception: ', str(e))
         return False
 
 
@@ -33,19 +36,17 @@ def find_metrika_ids(code):
     # Start BS4 magic
     soup = bs4.BeautifulSoup(code.text, "html.parser")
 
-    # Get all images
-    images = soup.find_all('img')
-
-    # Get all links
-    links = soup.find_all('a')
+    # Get all tags where Metrika can be present
+    images = soup.find_all("img")
+    links = soup.find_all("a")
 
     metrika_ids = []
 
     # Search for image version of Metrika
     for image in images:
-        src = image.get('src', [])
+        src = image.get("src", [])
 
-        if 'mc.yandex' in src:
+        if "mc.yandex" in src:
             splitted = src.split('/')
             if splitted[4].isdigit:
                 img_id = splitted[4].split('?')
@@ -75,22 +76,26 @@ def check_open_metrika(ids):
         html_code = get_website(metrika_url)
 
         if html_code is not False and html_code.status_code == 200:
-            soup = bs4.BeautifulSoup(html_code.text, "html.parser")
+            soup = bs4.BeautifulSoup(html_code.text, 'html.parser')
 
-            if soup.find_all("span", {"class": "counter-toolbar__name"}):
-                print("Metrika is open!")
+            if soup.find_all('span', {'class": "counter-toolbar__name'}):
+                print('Metrika is open!')
                 open_metrika.append(metrika_url)
 
     return open_metrika
 
 
 def save_unprocessed(sites):
-    file = open("unprocessed.txt", "w+")
+    file = open('unprocessed.txt', 'w+')
 
     for site in sites:
         file.write(site + "\n")
 
     file.close()
+
+
+def remove_unprocessed():
+    os.remove('unprocessed.txt')
 
 
 def save_csv_row(row):

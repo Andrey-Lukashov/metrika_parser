@@ -60,3 +60,6 @@ for site in sites:
     # Save unprocessed list for convenience
     unprocessedSites.pop(0)
     func.save_unprocessed(unprocessedSites)
+
+# Remove temp file
+func.remove_unprocessed()
