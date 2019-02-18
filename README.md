@@ -13,6 +13,10 @@ The script will then produce 2 files:
 - `results.csv` - main file that has god 
 - `unprocessed.txt` - it is a temporary file that saves the list of files that haven't been processed yet. Useful when program crash due to a bug. 
 
+## Requirements
+- Python 3
+- BeautifulSoup 4 for Python 3
+
 ## How to use it
 Run `metrika.py` with Python 3 in command line. The script will pick up the rest.
 
@@ -20,3 +24,4 @@ Run `metrika.py` with Python 3 in command line. The script will pick up the rest
 - Add an option to choose file with sites list
 - Make script generate HTML with clickable links too
 - Parse open dashboards for information insights
+- Process Cyrillic domain names too (.РФ, .РУС)

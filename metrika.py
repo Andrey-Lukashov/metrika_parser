@@ -32,6 +32,11 @@ for site in sites:
     if site is "":
         continue
 
+    # Check if it is a cyrillic domain
+    if func.has_cyrillic(site):
+        print("Oops, we do not process cyrillic domains (yet)!")
+        continue
+
     i = i + 1
 
     # Get website request
