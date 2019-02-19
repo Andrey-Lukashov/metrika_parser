@@ -100,7 +100,8 @@ def save_unprocessed(sites):
 
 
 def remove_unprocessed():
-    os.remove('unprocessed.txt')
+    if os.path.isfile('unprocessed.txt'):
+        os.remove('unprocessed.txt')
 
 
 def save_csv_row(row):
