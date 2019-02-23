@@ -39,6 +39,9 @@ for site in sites:
 
     i = i + 1
 
+    # Save unprocessed (in case program crash we still got list of sites)
+    func.save_unprocessed(unprocessedSites)
+
     # Get website request
     htmlCode = func.get_website(site)
 
@@ -62,9 +65,9 @@ for site in sites:
             else:
                 func.save_csv_row([site, metrikaIDs, 'Open', openMetrika[0]])
 
-    # Save unprocessed list for convenience
+    # Pop from top of unprocessed
     unprocessedSites.pop(0)
-    func.save_unprocessed(unprocessedSites)
+
 
 # Remove temp file
 func.remove_unprocessed()

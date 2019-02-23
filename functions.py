@@ -53,9 +53,10 @@ def find_metrika_ids(code):
 
         if "mc.yandex" in src:
             splitted = src.split('/')
-            if splitted[4].isdigit:
-                img_id = splitted[4].split('?')
-                metrika_ids.append(img_id[0])
+            if len(splitted) > 4:
+                if splitted[4].isdigit:
+                    img_id = splitted[4].split('?')
+                    metrika_ids.append(img_id[0])
 
     # Search for link version of Metrika
     for link in links:
