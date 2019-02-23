@@ -41,7 +41,7 @@ def get_website(url):
     except requests.exceptions.RequestException as e:
         print('[Warning] General Exception: ' + str(e))
         return False
-    except UnicodeError:
+    except UnicodeError as e:
         print('[Warning] Unicode Error:  ' + str(e))
 
 
