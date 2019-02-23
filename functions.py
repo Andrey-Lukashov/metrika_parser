@@ -7,6 +7,12 @@ import os
 import re
 
 
+def save_log(error_message):
+    file = open('results.txt', 'a', newline='')
+    file.write(error_message)
+    file.close()
+
+
 def has_cyrillic(text):
     return bool(re.search('[\u0400-\u04FF]', text))
 
@@ -35,6 +41,8 @@ def get_website(url):
     except requests.exceptions.RequestException as e:
         print('[Warning] General Exception: ', str(e))
         return False
+    except UnicodeError:
+        print('[Warning] Unicode Error:  ', str(e))
 
 
 def find_metrika_ids(code):
