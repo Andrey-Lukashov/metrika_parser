@@ -5,12 +5,15 @@ from urllib import parse
 import csv
 import os
 import re
+import datetime
 
 
 def save_log(error_message):
-    file = open('results.txt', 'a', newline='')
-    file.write(error_message)
+    now = datetime.datetime.now()
+    file = open('errors.log', 'a', newline='')
+    file.write("[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]:" + error_message + "\n")
     file.close()
+    print("Error log saved. ")
 
 
 def has_cyrillic(text):
@@ -36,13 +39,13 @@ def get_website(url):
         else:
             return False
     except (requests.ConnectionError, requests.Timeout) as e:
-        print('[Warning] Connection Error: ' + str(e))
+        save_log('[Warning] Connection Error: ' + str(e))
         return False
     except requests.exceptions.RequestException as e:
-        print('[Warning] General Exception: ' + str(e))
+        save_log('[Warning] General Exception: ' + str(e))
         return False
     except UnicodeError as e:
-        print('[Warning] Unicode Error:  ' + str(e))
+        save_log('[Warning] Unicode Error: ' + str(e))
 
 
 def find_metrika_ids(code):
