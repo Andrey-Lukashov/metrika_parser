@@ -39,10 +39,10 @@ def get_website(url):
         print('[Warning] Connection Error: ' + str(e))
         return False
     except requests.exceptions.RequestException as e:
-        print('[Warning] General Exception: ', str(e))
+        print('[Warning] General Exception: ' + str(e))
         return False
     except UnicodeError:
-        print('[Warning] Unicode Error:  ', str(e))
+        print('[Warning] Unicode Error:  ' + str(e))
 
 
 def find_metrika_ids(code):
